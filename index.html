@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolBoxPRO - Professional Web Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-main: #ffffff;
+            --bg-sub: #f8fafc;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Header / Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: var(--bg-main);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-sub);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 1rem 3rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-sub);
+            margin-bottom: 2rem;
+        }
+
+        /* Tool Selector Trigger Button */
+        .trigger-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .btn-trigger {
+            font-size: 1.1rem;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Dropdown/List Container */
+        .tools-list-container {
+            max-width: 900px;
+            margin: 0 auto 3rem auto;
+            padding: 0 1.5rem;
+            display: none; /* Dynamic opening */
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .list-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .tool-item {
+            background: var(--bg-sub);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tool-item:hover {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .tool-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .tool-item-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-item-info p {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        /* Dynamic Tool Workspace Area */
+        .workspace {
+            max-width: 700px;
+            margin: 2rem auto 5rem auto;
+            padding: 2rem;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            display: none; /* Open when tool selected */
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .workspace-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-box {
+            display: none; /* Individual tools inner screens */
+        }
+
+        .tool-box.active {
+            display: block;
+        }
+
+        /* Tool Input Elements Styling */
+        input[type="text"], input[type="password"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            background: var(--bg-sub);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        .output-box {
+            background: var(--bg-sub);
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+            min-height: 50px;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Modal Overlay for Signup */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-sub);
+        }
+
+        .modal h2 {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .modal p {
+            color: var(--text-sub);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            background: var(--bg-sub);
+        }
+
+        /* QR Canvas Hide */
+        #qr-canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="playSound(); location.reload();">
+            <i class="fa-solid fa-cubes"></i> ToolBox<span style="color: var(--text-main)">PRO</span>
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-outline" id="btn-list-toggle" onclick="toggleToolsList()">
+                <i class="fa-solid fa-list"></i> Explore Tools
+            </button>
+            <button class="btn btn-primary" onclick="openSignupModal()">
+                <i class="fa-solid fa-user-plus"></i> Sign Up
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Sare Premium Tools, Ek Hi Jagah Par.</h1>
+        <p>Aapki productivity badhane ke liye clean, super-fast aur professional level web applications tools.</p>
+        <div class="trigger-container">
+            <button class="btn btn-primary btn-trigger" onclick="toggleToolsList()">
+                <i class="fa-solid fa-folder-open"></i> Open Tools List
+            </button>
+        </div>
+    </section>
+
+    <section class="tools-list-container" id="tools-list-section">
+        <div class="list-header">Select a Tool to Launch</div>
+        <div class="tools-grid">
+            <div class="tool-item" onclick="launchTool('password-gen')">
+                <i class="fa-solid fa-key"></i>
+                <div class="tool-item-info">
+                    <h3>Password Generator</h3>
+                    <p>Secure password create karein</p>
+                </div>
+            </div>
+            <div class="tool-item" onclick="launchTool('qr-gen')">
+                <i class="fa-solid fa-qrcode"></i>
+                <div class="tool-item-info">
+                    <h3>QR Code Generator</h3>
+                    <p>Custom QR codes banayein</p>
+                </div>
+            </div>
+            <div class="tool-item" onclick="launchTool('text-conv')">
+                <i class="fa-solid fa-text-height"></i>
+                <div class="tool-item-info">
+                    <h3>Text Case Converter</h3>
+                    <p>Upper/Lower text transform</p>
+                </div>
+            </div>
+            <div class="tool-item" onclick="launchTool('word-counter')">
+                <i class="fa-solid fa-calculator"></i>
+                <div class="tool-item-info">
+                    <h3>Word & Char Counter</h3>
+                    <p>Count length instantly</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="workspace" id="tool-workspace">
+        <div class="workspace-header">
+            <div class="workspace-title" id="active-tool-title">
+                <i class="fa-solid fa-gear"></i> Tool Name
+            </div>
+            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;" onclick="closeWorkspace()"><i class="fa-solid fa-xmark"></i> Close</button>
+        </div>
+
+        <div class="tool-box" id="tool-password-gen">
+            <label style="font-weight:500; font-size:0.9rem;">Password Ki Length Chunyein:</label>
+            <input type="number" id="pass-length" value="12" min="6" max="30">
+            <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+            <div class="output-box" id="pass-output">Aapka secure password yahan dikhega...</div>
+            <div class="action-group">
+                <button class="btn btn-outline" onclick="downloadTxt('Password', document.getElementById('pass-output').innerText)"><i class="fa-solid fa-download"></i> Download File</button>
+            </div>
+        </div>
+
+        <div class="tool-box" id="tool-qr-gen">
+            <label style="font-weight:500; font-size:0.9rem;">Apna Text ya URL likhein:</label>
+            <input type="text" id="qr-text" placeholder="https://google.com ya kuch bhi...">
+            <button class="btn btn-primary" onclick="generateQR()">Generate QR Code</button>
+            <div class="output-box" style="text-align:center;" id="qr-output">
+                QR Image yahan load hogi...
+            </div>
+            <canvas id="qr-canvas"></canvas>
+            <div class="action-group">
+                <button class="btn btn-outline" onclick="downloadQR()"><i class="fa-solid fa-download"></i> Download Image (PNG)</button>
+            </div>
+        </div>
+
+        <div class="tool-box" id="tool-text-conv">
+            <label style="font-weight:500; font-size:0.9rem;">Apna raw text paste karein:</label>
+            <textarea id="case-text" rows="4" placeholder="KUCH BHI LIKHEIN YA PASTE KAREIN..."></textarea>
+            <div class="action-group" style="margin-bottom: 1rem;">
+                <button class="btn btn-primary" onclick="convertCase('up')">UPPERCASE</button>
+                <button class="btn btn-primary" onclick="convertCase('low')">lowercase</button>
+            </div>
+            <div class="output-box" id="case-output">Yahan transform text dikhega...</div>
+            <div class="action-group">
+                <button class="btn btn-outline" onclick="downloadTxt('ConvertedText', document.getElementById('case-output').innerText)"><i class="fa-solid fa-download"></i> Download File</button>
+            </div>
+        </div>
+
+        <div class="tool-box" id="tool-word-counter">
+            <label style="font-weight:500; font-size:0.9rem;">Content likhna churu karein:</label>
+            <textarea id="count-text" rows="4" placeholder="Apna paragraph likhein..." oninput="countTextStats()"></textarea>
+            <div class="output-box" id="count-output">
+                <strong>Words:</strong> 0 | <strong>Characters:</strong> 0
+            </div>
+            <div class="action-group">
+                <button class="btn btn-outline" onclick="downloadTxt('StatsData', document.getElementById('count-output').innerText)"><i class="fa-solid fa-download"></i> Download File</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="signup-modal-overlay">
+        <div class="modal">
+            <i class="fa-solid fa-xmark modal-close" onclick="closeSignupModal()"></i>
+            <h2>Create Account</h2>
+            <p>ToolBoxPRO ke advance features use karne ke liye signup karein.</p>
+            <form onsubmit="handleSignup(event)">
+                <label style="font-size:0.85rem; font-weight:500;">Poora Naam</label>
+                <input type="text" placeholder="Rahul Kumar" required>
+                <label style="font-size:0.85rem; font-weight:500;">Email ID</label>
+                <input type="text" placeholder="rahul@example.com" required>
+                <label style="font-size:0.85rem; font-weight:500;">Password</label>
+                <input type="password" placeholder="••••••••" required>
+                <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.75rem;">Create Free Account</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ToolBoxPRO. All absolute rights reserved. Built for GitHub Pages hosting.</p>
+    </footer>
+
+    <script>
+        // Professional Audio Context Sound Effect on click
+        function playSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(450, audioCtx.currentTime); // Professional soft click frequency
+                gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Low volume
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) {
+                // Audio context fallback
+            }
+        }
+
+        // Apply Sound effects on all visible interactive buttons dynamically
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('button, .tool-item, .logo').forEach(element => {
+                element.addEventListener('click', playSound);
+            });
+        });
+
+        // Toggle Expandable List Option
+        function toggleToolsList() {
+            const listSection = document.getElementById('tools-list-section');
+            if(listSection.style.display === 'block') {
+                listSection.style.display = 'none';
+            } else {
+                listSection.style.display = 'block';
+                listSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Launch Tool Area Function
+        function launchTool(toolId) {
+            // Display workspace
+            document.getElementById('tool-workspace').style.display = 'block';
+            
+            // Hide all toolboxes
+            document.querySelectorAll('.tool-box').forEach(box => box.classList.remove('active'));
+            
+            // Set Titles and Activate specific box
+            const titleElem = document.getElementById('active-tool-title');
+            
+            if(toolId === 'password-gen') {
+                titleElem.innerHTML = '<i class="fa-solid fa-key"></i> Premium Password Generator';
+                document.getElementById('tool-password-gen').classList.add('active');
+            } else if(toolId === 'qr-gen') {
+                titleElem.innerHTML = '<i class="fa-solid fa-qrcode"></i> Quick QR Code Generator';
+                document.getElementById('tool-qr-gen').classList.add('active');
+            } else if(toolId === 'text-conv') {
+                titleElem.innerHTML = '<i class="fa-solid fa-text-height"></i> Smart Text Case Converter';
+                document.getElementById('tool-text-conv').classList.add('active');
+            } else if(toolId === 'word-counter') {
+                titleElem.innerHTML = '<i class="fa-solid fa-calculator"></i> Word & Character Counter';
+                document.getElementById('tool-word-counter').classList.add('active');
+            }
+            
+            document.getElementById('tool-workspace').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeWorkspace() {
+            document.getElementById('tool-workspace').style.display = 'none';
+        }
+
+        /* TOOL ACTIONS LOGIC */
+
+        // 1. Password Generator Logic
+        function generatePassword() {
+            const length = parseInt(document.getElementById('pass-length').value) || 12;
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            let retVal = "";
+            for (let i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            document.getElementById('pass-output').innerText = retVal;
+        }
+
+        // 2. QR Code Generator (Using API and Canvas for downloading)
+        function generateQR() {
+            const text = document.getElementById('qr-text').value;
+            if(!text) {
+                alert('Kripya pehle text ya link enter karein!');
+                return;
+            }
+            const outputBox = document.getElementById('qr-output');
+            outputBox.innerHTML = `<img id="qr-img" crossorigin="anonymous" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}" alt="QR Code" style="margin-top:10px; border:1px solid #e2e8f0; padding:10px; background:white;"/>`;
+        }
+
+        function downloadQR() {
+            const img = document.getElementById('qr-img');
+            if(!img) {
+                alert('Pehle QR Code generate karein!');
+                return;
+            }
+            // Draw on canvas to trigger native browser file download
+            const canvas = document.getElementById('qr-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.naturalWidth || 200;
+            canvas.height = img.naturalHeight || 200;
+            ctx.drawImage(img, 0, 0);
+            
+            const link = document.createElement('a');
+            link.download = 'ToolBoxPRO-QRCode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 3. Text Case Converter Logic
+        function convertCase(type) {
+            const input = document.getElementById('case-text').value;
+            const outputBox = document.getElementById('case-output');
+            if(type === 'up') {
+                outputBox.innerText = input.toUpperCase();
+            } else {
+                outputBox.innerText = input.toLowerCase();
+            }
+        }
+
+        // 4. Word Counter Logic
+        function countTextStats() {
+            const text = document.getElementById('count-text').value;
+            const chars = text.length;
+            const words = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+            document.getElementById('count-output').innerHTML = `<strong>Words:</strong> ${words} | <strong>Characters:</strong> ${chars}`;
+        }
+
+        // GLOBAL DOWNLOAD UTILITY FOR TXT TOOLS
+        function downloadTxt(filename, content) {
+            if(!content || content.includes('yahan dikhega') || content.includes('Words: 0')) {
+                alert('Download karne ke liye koi content nahi mila!');
+                return;
+            }
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `ToolBoxPRO-${filename}.txt`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /* MODAL USER INTERACTION LOGIC */
+        function openSignupModal() {
+            document.getElementById('signup-modal-overlay').classList.add('active');
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signup-modal-overlay').classList.remove('active');
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            alert('ToolBoxPRO: Signup Successfull! Aapka Professional account ready hai.');
+            closeSignupModal();
+        }
+    </script>
+</body>
+</html>
